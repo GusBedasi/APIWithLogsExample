@@ -1,6 +1,6 @@
 using System;
 
-namespace AirbBNB.API
+namespace AirbBNB.API.Models
 {
     public class Travel
     {

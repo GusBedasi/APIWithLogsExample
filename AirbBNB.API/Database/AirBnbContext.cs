@@ -1,3 +1,4 @@
+using AirbBNB.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirbBNB.API.Database

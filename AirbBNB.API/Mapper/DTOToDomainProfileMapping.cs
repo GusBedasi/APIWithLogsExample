@@ -1,4 +1,5 @@
 using AirbBNB.API.DTO;
+using AirbBNB.API.Models;
 using AutoMapper;
 
 namespace AirbBNB.API.Mapper

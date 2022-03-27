@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AirbBNB.API.Attributes;
 using AirbBNB.API.Database;
 using AirbBNB.API.DTO;
+using AirbBNB.API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
