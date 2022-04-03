@@ -5,8 +5,6 @@ namespace AirbBNB.API.Database
 {
     public class AirBnbContext : DbContext
     {
-        private readonly DbContextOptions<AirBnbContext> _options;
-
         public AirBnbContext(DbContextOptions<AirBnbContext> options)
         : base(options)
         { }

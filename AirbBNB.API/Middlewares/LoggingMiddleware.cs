@@ -1,9 +1,7 @@
 using System;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Context;
@@ -23,25 +21,43 @@ namespace AirbBNB.API.Attributes
 
         public async Task Invoke(HttpContext context)
         {
-            //Todo
-            // Melhorar esse log,
-            // Quero um para a requisicao logando as informacoes do request
-            // Quero outro para resposta logando as informacoes do response
+            LogRequest(context);
             
-            context.Request?.EnableBuffering();
-            var requestReader = new StreamReader(context.Request?.Body);
-            var body = await requestReader.ReadToEndAsync();
-            context.Request.Body.Position = 0;
-
             await _next(context);
 
-            using (LogContext.PushProperty("Content", body))
+            LogResponse(context);
+        }
+
+        private async Task LogRequest(HttpContext context)
+        {
+            var requestBodyStream = context.Request.Body;
+            requestBodyStream.Position = 0;
+            
+            string requestBody = String.Empty;
+
+            using (var sr = new StreamReader(requestBodyStream))
             {
-                _logger.LogInformation("Request { method } { url } - StatusCode { statusCode }",
-                    context.Request?.Method,
-                    context.Request?.Path.Value,
-                    context.Response.StatusCode);
+                requestBody = await sr.ReadToEndAsync();
             }
+
+            using (LogContext.PushProperty("Content", requestBody))
+                Log.Information("[Request - {path}])", context.Request.Path);
+        }
+        
+        private async Task LogResponse(HttpContext context)
+        {
+            var responseBodyStream = context.Response.Body;
+            responseBodyStream.Position = 0;
+            
+            string responseBody = String.Empty;
+
+            using (var sr = new StreamReader(responseBodyStream))
+            {
+                responseBody = await sr.ReadToEndAsync();
+            }
+            
+            using (LogContext.PushProperty("Content", responseBody))
+                Log.Information("[Request - {path}])", context.Request.Path);
         }
     }
 }

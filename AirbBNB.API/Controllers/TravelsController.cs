@@ -29,6 +29,8 @@ namespace AirbBNB.API.Controllers
 
             await _context.AddAsync(travel);
 
+            await _context.SaveChangesAsync();
+
             var response = _mapper.Map<CreateTravelResponse>(travel);
             
             return Ok(response);
