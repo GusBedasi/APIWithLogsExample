@@ -3,6 +3,7 @@ using AirbBNB.API.Attributes;
 using AirbBNB.API.Database;
 using AirbBNB.API.Repositories;
 using AirbBNB.API.Repositories.Interfaces;
+using AirbBNB.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ namespace AirbBNB.API
             services.AddDbContext<AirBnbContext>( x => 
                 x.UseInMemoryDatabase("AirbBnbDB"));
             services.AddTransient<ITravelRepository, TravelRepository>();
+            services.AddScoped<ITravelServices, TravelServices>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
