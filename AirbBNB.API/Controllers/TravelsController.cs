@@ -1,10 +1,6 @@
 using System;
-using System.Threading.Tasks;
-using AirbBNB.API.Attributes;
-using AirbBNB.API.Database;
 using AirbBNB.API.DTO;
-using AirbBNB.API.Models;
-using AutoMapper;
+using AirbBNB.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AirbBNB.API.Controllers
@@ -13,26 +9,29 @@ namespace AirbBNB.API.Controllers
     [Route("core/v1/travels")]
     public class TravelsController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly AirBnbContext _context; 
+        private readonly ITravelServices _travelServices;
         
-        public TravelsController(IMapper mapper, AirBnbContext context)
+        public TravelsController(ITravelServices travelServices)
         {
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _travelServices = travelServices ?? throw new ArgumentNullException(nameof(travelServices));
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateTravel([FromBody] CreateTravelRequest request)
+        public IActionResult CreateTravel([FromBody] CreateTravelRequest request)
         {
-            var travel = _mapper.Map<Travel>(request);
-
-            await _context.AddAsync(travel);
-
-            await _context.SaveChangesAsync();
-
-            var response = _mapper.Map<CreateTravelResponse>(travel);
+            var response = _travelServices.CreateTravel(request);
             
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public IActionResult GetTravenlById([FromBody] string tranvelId)
+        {
+            var response = _travelServices.GetTravelById(tranvelId);
+
+            if(response == null)
+                return NotFound();
+
             return Ok(response);
         }
     }
