@@ -28,7 +28,7 @@ namespace AirbBNB.API.Repositories
             return set.FirstOrDefault(expression);
         }
 
-        public void Commit(T entity)
+        public void Commit()
         {
             _context.SaveChanges();
         }
